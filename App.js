@@ -42,7 +42,7 @@ export default function App() {
   }
 
   if(gameIsOver) {
-    screen = <GameOverScreen />
+    screen = <GameOverScreen setgameIsOver = {setgameIsOver} setUserNumber = {setUserNumber} />
   }
 
   function gameOverHandler() {
@@ -57,7 +57,7 @@ export default function App() {
         resizeMode="cover"
         source={require("./assets/images/background.png")}
       >
-        <SafeAreaView>{screen}</SafeAreaView>
+        <SafeAreaView style={styles.rootScreen}>{screen}</SafeAreaView>
       </ImageBackground>
     </LinearGradient>
   );
