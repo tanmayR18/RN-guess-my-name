@@ -45,10 +45,6 @@ function GameScreen({ userNumer, onGameOver }) {
     } else {
       minBoundary = currentGuess;
     }
-
-    console.log("Ye lower ke leye", direction === "lower" && currentGuess < userNumer)
-    console.log("Ye greater ke leye", direction === "greater" && currentGuess > userNumer)
-
     if (
       (direction === "lower" && currentGuess < userNumer) ||
       (direction === "greater" && currentGuess > userNumer)
@@ -57,11 +53,9 @@ function GameScreen({ userNumer, onGameOver }) {
       Alert.alert("Don't lie!", "You know that this is wrong...", [
         { text: "Sorry!", style: "cancel" },
       ]);
-      console.log("chutiya samja ")
       return
     }
 
-    console.log("ye run hua ")
     const newRndNumber = generateRandomBetween(
       minBoundary,
       maxBoundary,
@@ -96,7 +90,8 @@ function GameScreen({ userNumer, onGameOver }) {
         {/* {
             gussedRound.map( guess => <Text key={guess}>{guess}</Text>)
         } */}
-        <FlatList 
+        <FlatList
+        showsVerticalScrollIndicator={false} 
         data={gussedRound} renderItem={(item) => <GuessItems roundNumber={guessRoundListLength - item.index}  guess={item.item} />}
         />
       </View>
@@ -109,6 +104,7 @@ const styles = StyleSheet.create({
     flex:1,
     padding: 24,
     marginTop: 100,
+    alignItems: "center"
   },
   btnContainers: {
     flexDirection: "row",
