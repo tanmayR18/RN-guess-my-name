@@ -1,4 +1,4 @@
-import { Text, View, StyleSheet, Alert } from "react-native";
+import { Text, View, StyleSheet, Alert, FlatList } from "react-native";
 import Title from "../components/ui/Title";
 import NumberContainer from "../components/game/NumberContainer";
 import PrimaryBtn from "../components/ui/PrimaryBtn";
@@ -7,6 +7,7 @@ import Colors from "../constants/colors";
 import Card from "../components/ui/Card";
 import InstructionText from "../components/ui/InstructionText";
 import { Ionicons} from "@expo/vector-icons"
+import GuessItems from "../components/game/GuessItems";
 
 function generateRandomBetween(min, max, exclude) {
   const rndNum = Math.floor(Math.random() * (max - min)) + min;
@@ -24,12 +25,19 @@ let maxBoundary = 100;
 function GameScreen({ userNumer, onGameOver }) {
   const initalGuess = generateRandomBetween(1, 100, userNumer);
   const [currentGuess, setcurrentGuess] = useState(initalGuess);
+  const [ gussedRound, setGuessedRound ] = useState([])
 
   useEffect(() => {
     if (currentGuess === userNumer) {
-      onGameOver();
+      onGameOver(gussedRound.length);
     }
   }, [currentGuess, userNumer, onGameOver]);
+
+  useEffect(() => {
+    minBoundary = 1
+    maxBoundary = 100
+  }, [])
+  
 
   function nextGuessHandler(direction) {
     if (direction === "lower") {
@@ -38,23 +46,32 @@ function GameScreen({ userNumer, onGameOver }) {
       minBoundary = currentGuess;
     }
 
+    console.log("Ye lower ke leye", direction === "lower" && currentGuess < userNumer)
+    console.log("Ye greater ke leye", direction === "greater" && currentGuess > userNumer)
+
     if (
       (direction === "lower" && currentGuess < userNumer) ||
       (direction === "greater" && currentGuess > userNumer)
     ) {
+        console.log("Entered the if loop")
       Alert.alert("Don't lie!", "You know that this is wrong...", [
         { text: "Sorry!", style: "cancel" },
       ]);
-      return;
+      console.log("chutiya samja ")
+      return
     }
 
+    console.log("ye run hua ")
     const newRndNumber = generateRandomBetween(
       minBoundary,
       maxBoundary,
       currentGuess
     );
     setcurrentGuess(newRndNumber);
+    setGuessedRound( prevState => [ currentGuess, ...prevState])
   }
+
+  const guessRoundListLength = gussedRound.length;
 
   return (
     <View style={styles.screen}>
@@ -69,18 +86,27 @@ function GameScreen({ userNumer, onGameOver }) {
             </PrimaryBtn>
           </View>
           <View style={styles.btnContainer}>
-            <PrimaryBtn onPress={nextGuessHandler.bind(this, "higher")}>
+            <PrimaryBtn onPress={nextGuessHandler.bind(this, "greater")}>
               <Ionicons name="add" size={24} color={"white"} />
             </PrimaryBtn>
           </View>
         </View>
       </Card>
+      <View style={styles.listContainer}>
+        {/* {
+            gussedRound.map( guess => <Text key={guess}>{guess}</Text>)
+        } */}
+        <FlatList 
+        data={gussedRound} renderItem={(item) => <GuessItems roundNumber={guessRoundListLength - item.index}  guess={item.item} />}
+        />
+      </View>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
   screen: {
+    flex:1,
     padding: 24,
     marginTop: 100,
   },
@@ -106,7 +132,11 @@ const styles = StyleSheet.create({
     textAlign: "center",
   },
   instructionText:{
-    marginBottom: 12
+    marginBottom: 12,
+  },
+  listContainer: {
+    flex: 1,
+    padding: 16,
   }
 });
 

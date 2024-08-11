@@ -20,10 +20,11 @@ import AppLoading from "expo-app-loading";
 export default function App() {
   const [userNumber, setUserNumber] = useState();
   const [gameIsOver, setgameIsOver] = useState(false)
+  const [ guessRound, setGuessRound ] = useState(0)
 
   const [ fontLoaded, ] = useFonts({
-    "open-sans": require("./assets/fonts/open-sans.bold.ttf"),
-    "open-sans-bold": require("./assets/fonts/open-sans.regular.ttf"),
+      "open-sans": require("./assets/fonts/open-sans.regular.ttf"),
+      "open-sans-bold": require("./assets/fonts/open-sans.bold.ttf"),
   })
 
   if(!fontLoaded) {
@@ -35,19 +36,28 @@ export default function App() {
     setgameIsOver(false)
   }
 
-  let screen = <StartGameScreen onPickNumber={onPickNumber} />;
+  function gameOverHandler(numberOfRound) {
+    setgameIsOver(true)
+    setGuessRound(numberOfRound)
+  }
+
+  function startNewGameHandler() {
+    setUserNumber(null)
+    setgameIsOver(false)
+  }
+
+
+  let screen = <StartGameScreen onPickNumber={onPickNumber}/>;
 
   if (userNumber) {
     screen = <GameScreen userNumer={userNumber} onGameOver={gameOverHandler} />;
   }
 
   if(gameIsOver) {
-    screen = <GameOverScreen setgameIsOver = {setgameIsOver} setUserNumber = {setUserNumber} />
+    screen = <GameOverScreen userNumber={userNumber} roundsNumber = {guessRound} onStartNewGame={startNewGameHandler}  />
   }
 
-  function gameOverHandler() {
-    setgameIsOver(true)
-  }
+  
 
   return (
     <LinearGradient colors={[ Colors.primary700, Colors.accent500]} style={styles.rootScreen}>

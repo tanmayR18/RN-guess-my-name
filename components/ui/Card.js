@@ -16,7 +16,7 @@ const styles = StyleSheet.create({
     inputContainer: {
         alignItems: "center",
         backgroundColor: Colors.primary800,
-        marginTop: 36,
+        marginTop: 28,
         marginHorizontal: 24,
         padding: 16,
         borderRadius: 6,
