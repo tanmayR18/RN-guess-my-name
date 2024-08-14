@@ -32,7 +32,7 @@ const GameOverScreen = ({ roundsNumber, userNumber, onStartNewGame }) => {
   };
 
   return (
-    <ScrollView style={styles.screen}>
+    <ScrollView style={styles.screen} contentContainerStyle={{flexGrow: 1}} >
       <View style={styles.rootContainer}>
         <Title>GAME OVER!</Title>
         <View style={[styles.imageContiner, imageStyle]}>
@@ -58,13 +58,14 @@ export default GameOverScreen;
 
 const styles = StyleSheet.create({
     screen: {
-        flex: 1
+        flex: 1,
     },
   rootContainer: {
     flex: 1,
     padding: 24,
     justifyContent: "center",
     alignItems: "center",
+    minHeight: "100%"
   },
   imageContiner: {
     // width: deviceWidth < 380 ? 150 : 300,

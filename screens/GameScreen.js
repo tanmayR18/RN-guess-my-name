@@ -47,21 +47,22 @@ function GameScreen({ userNumer, onGameOver }) {
   }, []);
 
   function nextGuessHandler(direction) {
-    if (direction === "lower") {
-      maxBoundary = currentGuess;
-    } else {
-      minBoundary = currentGuess;
-    }
+    
     if (
       (direction === "lower" && currentGuess < userNumer) ||
       (direction === "greater" && currentGuess > userNumer)
     ) {
-      console.log("Entered the if loop");
       Alert.alert("Don't lie!", "You know that this is wrong...", [
         { text: "Sorry!", style: "cancel" },
       ]);
       return;
     }
+
+    if (direction === "lower") {
+        maxBoundary = currentGuess;
+      } else {
+        minBoundary = currentGuess;
+      }
 
     const newRndNumber = generateRandomBetween(
       minBoundary,
