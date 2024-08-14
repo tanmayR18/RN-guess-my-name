@@ -15,6 +15,7 @@ import { useState } from "react";
 import Colors from "./constants/colors";
 import GameOverScreen from "./screens/GameOverScreen";
 import AppLoading from "expo-app-loading";
+import { StatusBar } from "expo-status-bar";
 
 
 export default function App() {
@@ -60,6 +61,8 @@ export default function App() {
   
 
   return (
+    <>
+    <StatusBar style={"light"} />
     <LinearGradient colors={[ Colors.primary700, Colors.accent500]} style={styles.rootScreen}>
       <ImageBackground
         imageStyle={styles.backgroundImage}
@@ -70,6 +73,7 @@ export default function App() {
         <SafeAreaView style={styles.rootScreen}>{screen}</SafeAreaView>
       </ImageBackground>
     </LinearGradient>
+    </>
   );
 }
 
